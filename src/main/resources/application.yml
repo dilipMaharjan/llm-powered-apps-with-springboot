@@ -1,0 +1,9 @@
+spring:
+  ai:
+    ollama:
+      enabled: true
+      url: http://localhost:11434   # base URL of the local model server
+      chat:
+        options:
+          model: mistral:latest
+          temperature: 0.7
