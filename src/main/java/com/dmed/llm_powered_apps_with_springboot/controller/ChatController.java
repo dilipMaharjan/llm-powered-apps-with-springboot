@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class ChatController {
     private final ChatService chatService;
 
@@ -16,7 +16,12 @@ public class ChatController {
     }
 
     @GetMapping("/chat/{prompt}")
-    public String chat(@PathVariable("prompt") String prompt) {
-        return chatService.getChartResponse(prompt);
+    public String generalChat(@PathVariable String prompt) {
+        return chatService.getGeneralChatResponse(prompt);
+    }
+
+    @GetMapping("/chat/airline/{prompt}")
+    public String airlineChat(@PathVariable String prompt) {
+        return chatService.getAirlineChatResponse(prompt);
     }
 }
