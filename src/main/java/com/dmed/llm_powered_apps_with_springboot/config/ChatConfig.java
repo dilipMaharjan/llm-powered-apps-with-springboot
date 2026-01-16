@@ -15,6 +15,11 @@ public class ChatConfig {
     Resource airlineAssistantSystemMessage;
 
     @Bean
+    public ChatClient promptChatClient(ChatClient.Builder chatClientBuilder) {
+        log.info("Configuring ChatClient bean for prompt assistant");
+        return chatClientBuilder.build();
+    }
+    @Bean
     public ChatClient generalChatClient(ChatClient.Builder chatClientBuilder) {
         log.info("Configuring ChatClient bean for general assistant");
         chatClientBuilder.defaultSystem("You're a helpful assistant.");
