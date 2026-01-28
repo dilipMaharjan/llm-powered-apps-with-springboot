@@ -20,11 +20,4 @@ public class ChatConfig {
         chatClientBuilder.defaultSystem("You're a helpful assistant.");
         return chatClientBuilder.build();
     }
-
-    @Bean
-    public ChatClient airlineChatClient(ChatClient.Builder chatClientBuilder) {
-        log.info("Configuring ChatClient bean for airline assistant");
-        chatClientBuilder.defaultSystem(airlineAssistantSystemMessage);
-        return chatClientBuilder.build();
-    }
 }
