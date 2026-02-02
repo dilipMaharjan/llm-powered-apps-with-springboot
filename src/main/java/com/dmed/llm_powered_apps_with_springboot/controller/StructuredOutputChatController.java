@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -25,4 +26,15 @@ public class StructuredOutputChatController {
         return ResponseEntity.ok(countryLanguages);
     }
 
+    @GetMapping("/chat/structuredoutput/string-list")
+    public ResponseEntity<List<String>> stringList(@RequestParam String prompt) {
+        List<String> stringList = chatService.getStringList(prompt);
+        return ResponseEntity.ok(stringList);
+    }
+
+    @GetMapping("/chat/structuredoutput/map")
+    public ResponseEntity<Map<String, Object>> map(@RequestParam String prompt) {
+        Map<String, Object> map = chatService.getMap(prompt);
+        return ResponseEntity.ok(map);
+    }
 }

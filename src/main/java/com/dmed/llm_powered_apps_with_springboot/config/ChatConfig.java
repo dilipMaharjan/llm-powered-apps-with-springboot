@@ -14,8 +14,6 @@ public class ChatConfig {
         log.info("Configuring ChatClient bean for general assistant");
         chatClientBuilder.defaultSystem("""
                 You are a helpful assistant. 
-                Always respond strictly in valid JSON format.
-                If multiple CountryLanguage objects are requested, return a JSON array of such objects.
                 """);
         chatClientBuilder.defaultAdvisors(new SimpleLoggerAdvisor());
         return chatClientBuilder.build();
