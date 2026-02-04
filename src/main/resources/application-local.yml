@@ -2,4 +2,4 @@ spring:
   application:
     name: ai-app#local
 server:
-  port: 8080
+  port: 808 0

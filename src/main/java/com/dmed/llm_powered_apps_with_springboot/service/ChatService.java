@@ -1,6 +1,6 @@
 package com.dmed.llm_powered_apps_with_springboot.service;
 
-import com.dmed.llm_powered_apps_with_springboot.model.CountryLanguage;
+import com.dmed.llm_powered_apps_with_springboot.model.MovieLeadActor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.ai.converter.MapOutputConverter;
@@ -21,12 +21,12 @@ public class ChatService {
         this.generalChatClient = generalChatClient;
     }
 
-    public List<CountryLanguage> getGeneralChatResponse(String prompt) {
+    public List<MovieLeadActor> getGeneralChatResponse(String prompt) {
         return Objects.requireNonNull(
                 generalChatClient
                         .prompt(prompt)
                         .call()
-                        .entity(new ParameterizedTypeReference<List<CountryLanguage>>() {
+                        .entity(new ParameterizedTypeReference<List<MovieLeadActor>>() {
                         })
         );
     }

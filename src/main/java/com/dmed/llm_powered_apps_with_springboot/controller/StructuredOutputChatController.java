@@ -1,6 +1,6 @@
 package com.dmed.llm_powered_apps_with_springboot.controller;
 
-import com.dmed.llm_powered_apps_with_springboot.model.CountryLanguage;
+import com.dmed.llm_powered_apps_with_springboot.model.MovieLeadActor;
 import com.dmed.llm_powered_apps_with_springboot.service.ChatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +21,9 @@ public class StructuredOutputChatController {
     }
 
     @GetMapping("/chat/structuredoutput")
-    public ResponseEntity<List<CountryLanguage>> generalChat(@RequestParam String prompt) {
-        List<CountryLanguage> countryLanguages = chatService.getGeneralChatResponse(prompt);
-        return ResponseEntity.ok(countryLanguages);
+    public ResponseEntity<List<MovieLeadActor>> generalChat(@RequestParam String prompt) {
+        List<MovieLeadActor> movieLeadActors = chatService.getGeneralChatResponse(prompt);
+        return ResponseEntity.ok(movieLeadActors);
     }
 
     @GetMapping("/chat/structuredoutput/string-list")

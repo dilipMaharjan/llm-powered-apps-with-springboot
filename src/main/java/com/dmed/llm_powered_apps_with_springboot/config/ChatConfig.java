@@ -13,7 +13,9 @@ public class ChatConfig {
     public ChatClient generalChatClient(ChatClient.Builder chatClientBuilder) {
         log.info("Configuring ChatClient bean for general assistant");
         chatClientBuilder.defaultSystem("""
-                You are a helpful assistant. 
+                You are a helpful assistant.Return valid JSON only.
+                Each array element must be a plain string.
+                Do NOT include quotation marks inside the string values.
                 """);
         chatClientBuilder.defaultAdvisors(new SimpleLoggerAdvisor());
         return chatClientBuilder.build();
