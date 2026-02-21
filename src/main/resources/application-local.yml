@@ -1,5 +1,23 @@
+# noinspection SpellCheckingInspection
 spring:
   application:
     name: ai-app#local
+  docker:
+    compose:
+      stop:
+        command: down
+  ai:
+    vectorstore:
+      qdrant:
+        initialize-schema: true
+        host: localhost
+        port: 6334
+        collection-name: rag
+    model:
+      chat: ollama
+    ollama:
+      chat:
+        model: llama3.2
 server:
   port: 8080
+
