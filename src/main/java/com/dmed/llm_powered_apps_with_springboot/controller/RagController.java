@@ -17,4 +17,14 @@ public class RagController {
     public ResponseEntity<String> ragResponse(@RequestParam String prompt, @RequestHeader String username) {
         return ResponseEntity.ok(chatService.getChatResponseFromRag(prompt, username));
     }
+
+    @GetMapping("/rag/coc")
+    public ResponseEntity<String> coc(@RequestParam String prompt, @RequestHeader String username) {
+        return ResponseEntity.ok(chatService.getChatResponseFromRag(prompt, username));
+    }
+
+    @GetMapping("/rag/coc-with-advisor")
+    public ResponseEntity<String> cocWithAdvisor(@RequestParam String prompt, @RequestHeader String username) {
+        return ResponseEntity.ok(chatService.getChatResponseFromRagWithRetriverAdvisor(prompt, username));
+    }
 }

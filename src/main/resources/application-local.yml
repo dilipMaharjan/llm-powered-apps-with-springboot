@@ -18,6 +18,12 @@ spring:
     ollama:
       chat:
         model: llama3.2
+        options:
+          temperature: 0
+          top-k: 1
+          top-p: 1
+          repeat-penalty: 1
+          seed: 42
 server:
   port: 8080
 
