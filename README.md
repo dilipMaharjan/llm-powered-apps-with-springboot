@@ -38,11 +38,12 @@ A comprehensive guide to building AI-powered applications using Spring Boot and 
 - [5.4 PDF Document Loading](#54-pdf-document-loading)
 
 ### 6. **RAG Implementation**
-
 - [6.1 Data Loading & Initialization](#61-data-loading--initialization)
 - [6.2 Manual RAG Implementation](#62-manual-rag-implementation)
 - [6.3 RAG with Retrieval Advisor](#63-rag-with-retrieval-advisor)
 - [6.4 Document Retrieval Configuration](#64-document-retrieval-configuration)
+- [6.5 Custom Document Retrievers](#65-custom-document-retrievers)
+- [6.6 Web Document Retrieval with Tavily](#66-web-document-retrieval-with-tavily)
 
 ### 7. **Advisors**
 
@@ -317,6 +318,63 @@ VectorStoreDocumentRetriever settings:
 
 **Implementation**: `ChatConfig.retrievalAugmentationAdvisor()`
 
+### 6.5 Custom Document Retrievers
+
+Spring AI's `DocumentRetriever` interface enables custom retrieval strategies beyond vector stores:
+
+- Web search APIs (Tavily, Google, Bing)
+- Database queries
+- External APIs
+- File systems
+- Custom data sources
+
+**Key Interface**: `org.springframework.ai.rag.retrieval.search.DocumentRetriever`
+
+### 6.6 Web Document Retrieval with Tavily
+
+**NEW FEATURE** 🚀
+
+Endpoint: `/api/v1/rag/web-search`
+
+Custom `WebDocumentRetriever` implementation that:
+
+- Searches the web in real-time using Tavily API
+- Retrieves current information and news
+- Converts web results to Spring AI Documents
+- Integrates seamlessly with RetrievalAugmentationAdvisor
+
+**Key Features**:
+
+- Real-time web content retrieval
+- Configurable search parameters (max results, depth)
+- Direct answer extraction
+- Metadata-rich documents (URL, title, score)
+- Error handling and fallback
+
+**Implementation**:
+
+- `WebDocumentRetriever.java` - Custom retriever
+- `ChatConfig.webRetrievalAugmentationAdvisor()` - Configuration
+- `ChatService.getChatResponseFromWebSearch()` - Service method
+
+**Configuration**:
+The Tavily API key is read from the environment variable:
+
+```bash
+export TAVILY_SEARCH_API_KEY="tvly-your-api-key-here"
+```
+
+The retriever is configured with `maxResults: 5` (hardcoded in `ChatConfig.java`).
+
+**Usage Example**:
+
+```bash
+curl "http://localhost:8080/api/v1/rag/web-search?prompt=Latest%20AI%20trends%202026" \
+  -H "username: user1"
+```
+
+📚 **Detailed Documentation**: See [WebDocumentRetriever.md](docs/WebDocumentRetriever.md)
+
 ### 7.1 Understanding Advisors
 
 Advisors are interceptors that:
@@ -376,11 +434,11 @@ Parameters used:
 
 ### 9.1 Controller Implementation
 
-REST controller exposes three endpoints:
+REST controller exposes three main endpoints:
 
-1. `/api/v1/rag` - Basic RAG
-2. `/api/v1/rag/coc` - Code of Conduct RAG
-3. `/api/v1/rag/coc-with-advisor` - RAG with advisor
+1. `/api/v1/rag/coc` - Manual RAG with vector store
+2. `/api/v1/rag/coc-with-advisor` - Vector store RAG with advisor
+3. `/api/v1/rag/web-search` - 🌐 Real-time web search with Tavily
 
 **Location**: `RagController.java`
 
@@ -392,6 +450,7 @@ All endpoints:
 - Require headers (`username`)
 - Return string responses
 - Use GET method
+- Support conversation memory
 
 ### 9.3 Request/Response Handling
 
@@ -517,39 +576,52 @@ Chunk size (100 tokens) balances:
 - Maven 3.8+
 - Docker & Docker Compose
 - Ollama with llama3.2 model
+- **Tavily API Key** (optional, for web search feature) - [Get one here](https://tavily.com/)
 
 ### Running the Application
 
-1. **Start Qdrant Vector Store**:
+1. **Set Tavily API Key** (optional, for web search):
+   ```bash
+   export TAVILY_SEARCH_API_KEY="tvly-your-api-key-here"
+   ```
+
+2. **Start Qdrant Vector Store**:
    ```bash
    docker-compose up -d
    ```
 
-2. **Build the Application**:
+3. **Build the Application**:
    ```bash
    ./mvnw clean install
    ```
 
-3. **Run the Application**:
+4. **Run the Application**:
    ```bash
    ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
    ```
 
 ### Testing the Endpoints
 
-**Manual RAG**:
-
+**Manual RAG (Vector Store)**:
 ```bash
 curl -X GET "http://localhost:8080/api/v1/rag/coc?prompt=What%20is%20the%20code%20of%20conduct?" \
   -H "username: testuser"
 ```
 
-**RAG with Advisor**:
-
+**RAG with Advisor (Vector Store)**:
 ```bash
 curl -X GET "http://localhost:8080/api/v1/rag/coc-with-advisor?prompt=What%20is%20the%20code%20of%20conduct?" \
   -H "username: testuser"
 ```
+
+**Web Search with Tavily** 🌐:
+
+```bash
+curl -X GET "http://localhost:8080/api/v1/rag/web-search?prompt=What%20are%20the%20latest%20Spring%20Boot%20features%20in%202026?" \
+  -H "username: testuser"
+```
+
+📚 **More Examples**: See [EXAMPLES-WebSearch.md](docs/EXAMPLES-WebSearch.md) for comprehensive examples.
 
 ---
 
@@ -563,11 +635,13 @@ src/
 │   │   ├── config/
 │   │   │   └── ChatConfig.java                           # ChatClient & Advisor configuration
 │   │   ├── controller/
-│   │   │   └── RagController.java                        # REST endpoints
+│   │   │   └── RagController.java                        # REST endpoints (3 endpoints)
 │   │   ├── service/
 │   │   │   └── ChatService.java                          # Business logic
 │   │   └── rag/
-│   │       └── DataLoader.java                           # Document loading & initialization
+│   │       ├── DataLoader.java                           # Document loading & initialization
+│   │       └── retriever/
+│   │           └── WebDocumentRetriever.java             # Custom Tavily web search retriever
 │   └── resources/
 │       ├── application.yml                                # Base configuration
 │       ├── application-local.yml                          # Local profile configuration
@@ -575,6 +649,15 @@ src/
 │       │   └── code-of-conduct.pdf                       # Sample PDF document
 │       └── promptTemplates/
 │           └── systemPromptTemplateForRag.st             # System prompt template
+├── test/
+│   └── java/com/dmed/llm_powered_apps_with_springboot/
+│       └── rag/retriever/
+│           └── WebDocumentRetrieverTest.java              # Integration tests
+├── docs/
+│   ├── WebDocumentRetriever.md                            # Detailed Tavily integration guide
+│   ├── QUICKSTART-WebSearch.md                            # Quick start guide
+│   ├── EXAMPLES-WebSearch.md                              # Comprehensive examples
+│   └── API-Reference.md                                   # Complete API documentation
 ```
 
 ---
@@ -593,6 +676,8 @@ After working through this project, you will understand:
 8. ✅ Advisor pattern for modular AI functionality
 9. ✅ Similarity search and document retrieval
 10. ✅ Model configuration and parameter tuning
+11. ✅ **Custom DocumentRetriever implementation**
+12. ✅ **Real-time web search integration with Tavily**
 
 ---
 
@@ -602,7 +687,9 @@ After working through this project, you will understand:
 - **Spring AI 1.1.2** - AI integration
 - **Ollama** - Local LLM runtime
 - **Qdrant** - Vector database
+- **Tavily API** - Web search service
 - **Apache Tika** - Document parsing
+- **RestClient** - HTTP client (Spring Framework 6.1+)
 - **Lombok** - Code generation
 - **Docker** - Containerization
 - **Maven** - Build tool

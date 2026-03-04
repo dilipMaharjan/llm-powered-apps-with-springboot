@@ -2,7 +2,6 @@ package com.dmed.llm_powered_apps_with_springboot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -23,14 +22,21 @@ public class ChatService {
     private final ChatClient chatClientForRag;
 
     private final ChatClient chatClientForRagWithAdvisor;
+
+    private final ChatClient webDocumentRetrievalChatClient;
+
     private final VectorStore vectorStore;
     @Value("classpath:promptTemplates/systemPromptTemplateForRag.st")
     private Resource promptTemplateForRag;
 
 
-    public ChatService(@Qualifier("chatClientForRag") ChatClient chatClientForRag, @Qualifier("chatClientForRagWithAdvisor") ChatClient chatClientForRagWithAdvisor, ChatMemory chatMemory, VectorStore vectorStore) {
+    public ChatService(@Qualifier("chatClientForRag") ChatClient chatClientForRag,
+                       @Qualifier("chatClientForRagWithAdvisor") ChatClient chatClientForRagWithAdvisor,
+                       @Qualifier("webDocumentRetrievalChatClient") ChatClient webDocumentRetrievalChatClient,
+                       VectorStore vectorStore) {
         this.chatClientForRag = chatClientForRag;
         this.chatClientForRagWithAdvisor = chatClientForRagWithAdvisor;
+        this.webDocumentRetrievalChatClient = webDocumentRetrievalChatClient;
         this.vectorStore = vectorStore;
     }
 
@@ -62,6 +68,19 @@ public class ChatService {
 
     public String getChatResponseFromRagWithRetriverAdvisor(String prompt, String username) {
         return chatClientForRagWithAdvisor.prompt(prompt)
+                .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID, username))
+                .user(prompt)
+                .call()
+                .content();
+    }
+
+    /**
+     * Get chat response using web search via Tavily API
+     * Uses WebDocumentRetriever to fetch real-time information from the web
+     */
+    public String getChatResponseFromWebSearch(String prompt, String username) {
+        log.info("Getting chat response from web search for user: {}", username);
+        return webDocumentRetrievalChatClient.prompt(prompt)
                 .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID, username))
                 .user(prompt)
                 .call()

@@ -27,4 +27,9 @@ public class RagController {
     public ResponseEntity<String> cocWithAdvisor(@RequestParam String prompt, @RequestHeader String username) {
         return ResponseEntity.ok(chatService.getChatResponseFromRagWithRetriverAdvisor(prompt, username));
     }
+
+    @GetMapping("/rag/web-search")
+    public ResponseEntity<String> webSearch(@RequestParam String prompt, @RequestHeader String username) {
+        return ResponseEntity.ok(chatService.getChatResponseFromWebSearch(prompt, username));
+    }
 }
