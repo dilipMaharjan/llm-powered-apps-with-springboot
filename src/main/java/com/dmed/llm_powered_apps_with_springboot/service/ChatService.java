@@ -11,26 +11,13 @@ public class ChatService {
 
     private final ChatClient generalChatClient;
 
-    private final ChatClient airlineChatClient;
 
-    public ChatService(@Qualifier("generalChatClient") ChatClient generalChatClient,
-                       @Qualifier("airlineChatClient") ChatClient airlineChatClient) {
+    public ChatService(@Qualifier("generalChatClient") ChatClient generalChatClient) {
         this.generalChatClient = generalChatClient;
-        this.airlineChatClient = airlineChatClient;
     }
 
     public String getGeneralChatResponse(String prompt) {
         return Objects.requireNonNull(generalChatClient.
-                        prompt(prompt)
-                        .call()
-                        .chatResponse())
-                .getResult()
-                .getOutput()
-                .getText();
-    }
-
-    public String getAirlineChatResponse(String prompt) {
-        return Objects.requireNonNull(airlineChatClient.
                         prompt(prompt)
                         .call()
                         .chatResponse())

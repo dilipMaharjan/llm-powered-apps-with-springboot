@@ -1,5 +1,18 @@
 spring:
   application:
     name: ai-app#local
+  ai:
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-servers.json
 server:
-  port: 8080
+  port: 8081
+
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: DEBUG
+    org.springframework.ai.mcp: DEBUG  # Enable MCP client debugging
+  pattern:
+    console: "%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n"
+

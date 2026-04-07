@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--mount",
+        "type=bind,src=/Users/crazdrms/projects/ai/springboot/llm-powered-apps-with-springboot/src/test/resources/mcp,dst=/app/projects",
+        "mcp/filesystem",
+        "/app/projects"
+      ]
+    }
+  }
+}
