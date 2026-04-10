@@ -35,11 +35,11 @@ interaction with the system.
 - **Database**: H2 (in-memory for development)
 - **AI Integration**: Spring AI 1.0.0 with MCP Server
 - **Build Tool**: Maven
-- **Java Version**: 17
+- **Java Version**: 20
 
 ## Prerequisites
 
-1. **Java 17** or higher
+1. **Java 20** or higher
 2. **Maven 3.6+**
 
 ## Running the Application
