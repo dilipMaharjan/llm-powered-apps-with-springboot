@@ -26,9 +26,10 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
-    "spirng-ai-mcp": {
+    "helpdesk": {
       "command": "/usr/bin/java",
       "args": [
+        "-Dlogging.level.root=OFF",
         "-jar",
         "/Users/crazdrms/projects/ai/springboot/llm-powered-apps-with-springboot/target/llm-powered-apps-with-springboot-mcp-0.0.1-SNAPSHOT.jar"
       ]

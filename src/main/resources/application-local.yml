@@ -2,10 +2,18 @@ spring:
   application:
     name: ai-app#local
   ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: "qwen2.5:7b"
+        options:
+          temperature: 0
+
     mcp:
       client:
         stdio:
-          servers-configuration: classpath:mcp-servers.json
+          #          servers-configuration: classpath:custom-mcp-servers.json
+          servers-configuration: classpath:custom-mcp-servers.json
 server:
   port: 8081
 
