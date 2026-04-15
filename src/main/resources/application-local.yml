@@ -10,10 +10,10 @@ spring:
           temperature: 0
     mcp:
       client:
-          sse:
-            connections:
-              remote-mcp-server:
-                url: http://localhost:8081
+        streamable-http:
+          connections:
+            remote-mcp-server:
+              url: http://localhost:8081
 logging:
   level:
     org.springframework.ai.chat.client.advisor: DEBUG
