@@ -13,10 +13,11 @@ spring:
       client:
         stdio:
           #          servers-configuration: classpath:custom-mcp-servers.json
-          servers-configuration: classpath:custom-mcp-servers.json
-server:
-  port: 8081
-
+          servers-configuration: classpath:mcp-servers.json
+          sse:
+            connections:
+              remote-mcp-server:
+                url: http://localhost:8081
 logging:
   level:
     org.springframework.ai.chat.client.advisor: DEBUG
