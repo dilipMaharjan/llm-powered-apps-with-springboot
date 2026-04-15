@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ai-app#local
+    name: mcp-remote-client#local
   ai:
     ollama:
       base-url: http://localhost:11434
@@ -8,12 +8,8 @@ spring:
         model: "qwen2.5:7b"
         options:
           temperature: 0
-
     mcp:
       client:
-        stdio:
-          #          servers-configuration: classpath:custom-mcp-servers.json
-          servers-configuration: classpath:mcp-servers.json
           sse:
             connections:
               remote-mcp-server:
