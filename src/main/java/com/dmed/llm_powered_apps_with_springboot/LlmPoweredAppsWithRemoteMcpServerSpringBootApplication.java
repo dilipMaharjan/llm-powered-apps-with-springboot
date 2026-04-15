@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LlmPoweredAppsWithSpringBootApplication {
+public class LlmPoweredAppsWithRemoteMcpServerSpringBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(LlmPoweredAppsWithSpringBootApplication.class, args);
+        SpringApplication.run(LlmPoweredAppsWithRemoteMcpServerSpringBootApplication.class, args);
     }
 
 }
