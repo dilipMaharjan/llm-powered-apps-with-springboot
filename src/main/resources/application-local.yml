@@ -17,6 +17,11 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  ai:
+    mcp:
+      server:
+        protocol: STREAMABLE
+
 server:
   port: 8081
 
