@@ -10,6 +10,8 @@ spring:
           temperature: 0
     mcp:
       client:
+        #        stdio:
+        #          servers-configuration: classpath:mcp-servers.json
         sse:
           connections:
             mcp-client:
