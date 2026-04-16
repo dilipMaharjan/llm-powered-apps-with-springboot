@@ -69,7 +69,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>${project.artifactId}-mcp-${project.version}</finalName>
+        <finalName>${project.artifactId}-remote-mcp-server-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
