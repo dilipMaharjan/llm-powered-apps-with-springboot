@@ -19,9 +19,4 @@ public class ChatController {
     public String generalChat(@PathVariable String prompt) {
         return chatService.getGeneralChatResponse(prompt);
     }
-
-    @GetMapping("/chat/airline/{prompt}")
-    public String airlineChat(@PathVariable String prompt) {
-        return chatService.getAirlineChatResponse(prompt);
-    }
 }
